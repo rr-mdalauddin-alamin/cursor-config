@@ -1,0 +1,7 @@
+{
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "install": "bash scripts/install-learning-curriculum.sh",
+  "start": "bash scripts/install-learning-curriculum.sh"
+}

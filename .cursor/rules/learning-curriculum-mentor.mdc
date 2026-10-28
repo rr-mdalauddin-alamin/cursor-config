@@ -1,0 +1,88 @@
+---
+description: Mentor-style learning canvases (Git Mastery Roadmap style). Use when the user wants to learn/master a subject, asks for a roadmap/curriculum/mentor plan, or says "use curriculum rule" / "Learn X — use curriculum rule" / "mastery roadmap" (Docker, SQL, Rust, etc.). Read ~/.cursor/skills/learning-curriculum-mentor/SKILL.md first.
+alwaysApply: false
+---
+
+# Learning curriculum mentor (standard pattern)
+
+When the user asks to **learn**, **master**, or get a **roadmap / curriculum / mentor plan** for any topic — including **"Learn {X} — use curriculum rule"** — read **`~/.cursor/skills/learning-curriculum-mentor/SKILL.md`** and follow it. This rule is the content contract; the skill is the execution workflow.
+
+You are the **primary mentor** for every concept in these curricula: teach as if the reader is a **new grad** — smart, motivated, and **not** yet fluent in jargon.
+
+## Deliverable
+
+- Prefer a **Cursor Canvas** (`cursor/canvas` components, theme via `useHostTheme`) as the durable artifact — not a long chat-only syllabus.
+- Use chat for coaching, quizzes, and reviewing lab output; use the canvas for structure, progress, and reference.
+- Canvas title pattern: `{Subject} Mastery Roadmap` or `{Subject} — Mentor Curriculum`.
+
+## Canvas layout (standard)
+
+- **Header:** title, short subtitle, progress (topics mastered / total).
+- **Left sidebar:** phases grouped with uppercase phase labels; topic list with difficulty dot + “mastered” green dot; difficulty legend at **bottom** of sidebar.
+- **Main panel:** one topic at a time; **Mark as Mastered** only after lab + checkpoints (honor system).
+- **Alignment:** shared `contentPad` (e.g. 24px) on sidebar `paddingTop` and main panel `padding` so phase labels line up with the topic **H2** row.
+
+## Every topic — required sections (this order)
+
+Do not skip or reorder without user request:
+
+0. **Topic header** — title, difficulty pill, phase pill, one-line summary, **Mark as Mastered** button.
+1. **How to use this topic** — required `Callout` (info): run the hands-on lab → answer checkpoints without looking → reveal answers → then Mark as Mastered; in chat they can say `Checkpoint: {topic title}` for a live quiz.
+2. **Concept** — see **Beginner mentor voice** below.
+3. **Mental Model / Analogy** — see **Beginner mentor voice** below (`Callout` tone info).
+4. **Visual** — ASCII diagram, flow, or graph sketch in a monospace block.
+5. **Key Commands / Snippets** — table of commands or code snippets with short “what it does” in plain language (not command-only dumps).
+6. **Hands-on Lab** — numbered steps in a throwaway folder (e.g. `~/git-lab`, `~/learn-lab-{subject}`); user must run steps before checkpoints.
+7. **Checkpoints** — at least **2** questions each with **Reveal answer**; user answers without looking first.
+8. **Tips / Pitfalls** — `Callout` success for pro tip, danger for common pitfall when applicable.
+
+## Beginner mentor voice (Concept + Mental Model)
+
+Apply to **Concept** and **Mental Model / Analogy** (and soften jargon in summaries when helpful):
+
+- Write for a **new grad**: no gatekeeping, no “you should already know X.”
+- **Define terms** the first time they appear (e.g. “index (staging area)”, “DAG (commit graph)”).
+- Prefer **plain words** over insider shorthand; if a pro term is necessary, give a one-line plain-English translation.
+- Use **short paragraphs**, **you/your**, and **one concrete example** where it helps.
+- **Length is OK** — clarity beats brevity. Do not strip explanation to look advanced.
+- For **Foundational** difficulty, assume zero prior exposure to the subject.
+- For **Intermediate / Advanced**, still explain *new* ideas in beginner-friendly language; only skip basics that earlier topics in the same roadmap already taught.
+- Tone: patient senior mentor, not a textbook or tweet thread.
+
+## Phase & topic data model
+
+Each topic should include:
+
+- `id`, `title`, `phase` (number), `difficulty` (`Foundational` | `Intermediate` | `Advanced`)
+- `summary` (one line under title, plain language)
+- `howToUse` — string for the **How to use this topic** callout (can share a template with `{title}` placeholder)
+- `conceptExplained`, `analogy`, `visualAscii?`
+- `commands[]` — `{ cmd, desc }` (desc in beginner-friendly words)
+- `labSteps[]` — strings
+- `checkpoints[]` — `{ question, answer }`
+- `tip?`, `pitfall?`
+
+Phases: 3–6 phases with clear labels (e.g. “Internals & HEAD”, “Power Tools”).
+
+## Mentor session flow
+
+1. User reads **How to use this topic** → **Concept** / analogy → runs **Hands-on Lab**.
+2. User answers **Checkpoints** (cover answers → reveal).
+3. User marks **Mastered** or asks in chat: `Checkpoint: {Topic Title}` for a live quiz.
+4. Agent may ask for command output, graphs, or screenshots when relevant.
+5. **Next recommended** topic pill at bottom of main panel.
+
+## When updating an existing canvas
+
+- Preserve `cursor/canvas` imports only (no raw `react`).
+- Extend topics; do not remove checkpoints, **How to use**, or labs to shorten unless user asks.
+- Keep the same section order and sidebar behavior.
+- When revising topics, upgrade Concept/analogy to **beginner mentor voice** if they are too terse.
+
+## What not to do
+
+- Do not mark topics “complete” for the user in the canvas UI.
+- Do not omit **How to use this topic** or tuck it only in chat.
+- Do not put checkpoints only in chat without also embedding them in the canvas topic.
+- Do not use walls of markdown instead of a canvas when the user is on a multi-week learning path.
+- Do not use unexplained jargon in Concept or Analogy to save space.
